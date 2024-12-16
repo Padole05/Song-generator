@@ -1,21 +1,8 @@
-﻿/*===================================================
-
-Written by Alan Wolfe 5/2012
-
-http://demofox.org
-
-some useful links about the wave file format:
-http://www.piclist.com/techref/io/serial/midi/wave.html
-https://ccrma.stanford.edu/courses/422/projects/WaveFormat/
-
-Note: This source code assumes that you are on a little endian machine.
-
-===================================================*/
-
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <memory.h>
 #include <stdlib.h>
 
+#define _CRT_SECURE_NO_WARNINGS
 #define _USE_MATH_DEFINES
 #include <math.h>
 
@@ -178,84 +165,54 @@ float AdvanceOscilator_Sine(float& fPhase, float fFrequency, float fSampleRate)
 
 	return sin(fPhase);
 }
-
-float AdvanceOscilator_Saw(float& fPhase, float fFrequency, float fSampleRate)
-{
-	fPhase += fFrequency / fSampleRate;
-
-	while (fPhase > 1.0f)
-		fPhase -= 1.0f;
-
-	while (fPhase < 0.0f)
-		fPhase += 1.0f;
-
-	return (fPhase * 2.0f) - 1.0f;
-}
-
-float AdvanceOscilator_Square(float& fPhase, float fFrequency, float fSampleRate)
-{
-	fPhase += fFrequency / fSampleRate;
-
-	while (fPhase > 1.0f)
-		fPhase -= 1.0f;
-
-	while (fPhase < 0.0f)
-		fPhase += 1.0f;
-
-	if (fPhase <= 0.5f)
-		return -1.0f;
-	else
-		return 1.0f;
-}
-
-float AdvanceOscilator_Triangle(float& fPhase, float fFrequency, float fSampleRate)
-{
-	fPhase += fFrequency / fSampleRate;
-
-	while (fPhase > 1.0f)
-		fPhase -= 1.0f;
-
-	while (fPhase < 0.0f)
-		fPhase += 1.0f;
-
-	float fRet;
-	if (fPhase <= 0.5f)
-		fRet = fPhase * 2;
-	else
-		fRet = (1.0f - fPhase) * 2;
-
-	return (fRet * 2.0f) - 1.0f;
-}
-
-float AdvanceOscilator_Noise(float& fPhase, float fFrequency, float fSampleRate, float fLastValue)
-{
-	unsigned int nLastSeed = (unsigned int)fPhase;
-	fPhase += fFrequency / fSampleRate;
-	unsigned int nSeed = (unsigned int)fPhase;
-
-	while (fPhase > 2.0f)
-		fPhase -= 1.0f;
-
-	if (nSeed != nLastSeed)
-	{
-		float fValue = ((float)rand()) / ((float)RAND_MAX);
-		fValue = (fValue * 2.0f) - 1.0f;
-
-		//uncomment the below to make it slightly more intense
-		/*
-		if(fValue < 0)
-			fValue = -1.0f;
-		else
-			fValue = 1.0f;
-		*/
-
-		return fValue;
-	}
-	else
-	{
-		return fLastValue;
-	}
-}
+//
+//float AdvanceOscilator_Saw(float& fPhase, float fFrequency, float fSampleRate)
+//{
+//	fPhase += fFrequency / fSampleRate;
+//
+//	while (fPhase > 1.0f)
+//		fPhase -= 1.0f;
+//
+//	while (fPhase < 0.0f)
+//		fPhase += 1.0f;
+//
+//	return (fPhase * 2.0f) - 1.0f;
+//}
+//
+//float AdvanceOscilator_Square(float& fPhase, float fFrequency, float fSampleRate)
+//{
+//	fPhase += fFrequency / fSampleRate;
+//
+//	while (fPhase > 1.0f)
+//		fPhase -= 1.0f;
+//
+//	while (fPhase < 0.0f)
+//		fPhase += 1.0f;
+//
+//	if (fPhase <= 0.5f)
+//		return -1.0f;
+//	else
+//		return 1.0f;
+//}
+//
+//float AdvanceOscilator_Triangle(float& fPhase, float fFrequency, float fSampleRate)
+//{
+//	fPhase += fFrequency / fSampleRate;
+//
+//	while (fPhase > 1.0f)
+//		fPhase -= 1.0f;
+//
+//	while (fPhase < 0.0f)
+//		fPhase += 1.0f;
+//
+//	float fRet;
+//	if (fPhase <= 0.5f)
+//		fRet = fPhase * 2;
+//	else
+//		fRet = (1.0f - fPhase) * 2;
+//
+//	return (fRet * 2.0f) - 1.0f;
+//}
 
 //the entry point of our application
 int main(int argc, char** argv)
@@ -275,12 +232,12 @@ int main(int argc, char** argv)
 	float fPhase = 0;
 
 	//make a naive sine wave
-	for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
+	/*for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
 	{
 		pData[nIndex] = sin((float)nIndex * 2 * (float)M_PI * fFrequency / (float)nSampleRate);
 	}
 
-	WriteWaveFile<int16>("sinenaive.wav", pData, nNumSamples, nNumChannels, nSampleRate);
+	WriteWaveFile<int16>("sinenaive.wav", pData, nNumSamples, nNumChannels, nSampleRate);*/
 
 	//make a discontinuitous (popping) sine wave
 	for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
@@ -356,37 +313,32 @@ int main(int argc, char** argv)
 
 	WriteWaveFile<int16>("sineclip.wav", pData, nNumSamples, nNumChannels, nSampleRate);
 
-	//make a saw wave
-	for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
-	{
-		pData[nIndex] = AdvanceOscilator_Saw(fPhase, fFrequency, (float)nSampleRate);
-	}
+	////make a saw wave
+	//for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
+	//{
+	//	pData[nIndex] = AdvanceOscilator_Saw(fPhase, fFrequency, (float)nSampleRate);
+	//}
 
-	WriteWaveFile<int16>("saw.wav", pData, nNumSamples, nNumChannels, nSampleRate);
+	//WriteWaveFile<int16>("saw.wav", pData, nNumSamples, nNumChannels, nSampleRate);
 
-	//make a square wave
-	for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
-	{
-		pData[nIndex] = AdvanceOscilator_Square(fPhase, fFrequency, (float)nSampleRate);
-	}
+	////make a square wave
+	//for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
+	//{
+	//	pData[nIndex] = AdvanceOscilator_Square(fPhase, fFrequency, (float)nSampleRate);
+	//}
 
-	WriteWaveFile<int16>("square.wav", pData, nNumSamples, nNumChannels, nSampleRate);
+	//WriteWaveFile<int16>("square.wav", pData, nNumSamples, nNumChannels, nSampleRate);
 
-	//make a triangle wave
-	for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
-	{
-		pData[nIndex] = AdvanceOscilator_Triangle(fPhase, fFrequency, (float)nSampleRate);
-	}
+	////make a triangle wave
+	//for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
+	//{
+	//	pData[nIndex] = AdvanceOscilator_Triangle(fPhase, fFrequency, (float)nSampleRate);
+	//}
 
-	WriteWaveFile<int16>("triangle.wav", pData, nNumSamples, nNumChannels, nSampleRate);
+	//WriteWaveFile<int16>("triangle.wav", pData, nNumSamples, nNumChannels, nSampleRate);
 
-	//make some noise or... make... some... NOISE!!!
-	for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
-	{
-		pData[nIndex] = AdvanceOscilator_Noise(fPhase, fFrequency, (float)nSampleRate, nIndex > 0 ? pData[nIndex - 1] : 0.0f);
-	}
+	
 
-	WriteWaveFile<int16>("noise.wav", pData, nNumSamples, nNumChannels, nSampleRate);
 
 	//make a dumb little song
 	for (int nIndex = 0; nIndex < nNumSamples; ++nIndex)
@@ -437,7 +389,7 @@ int main(int argc, char** argv)
 			break;
 		}
 
-		case 8:
+		/*case 8:
 		{
 			pData[nIndex] = AdvanceOscilator_Saw(fPhase, CalcFrequency(4, 0), (float)nSampleRate);
 			break;
@@ -467,7 +419,7 @@ int main(int argc, char** argv)
 		{
 			pData[nIndex] = AdvanceOscilator_Saw(fPhase, CalcFrequency(4, 5 - fQuarterNotePercent * 2.0f), (float)nSampleRate) * (1.0f - fQuarterNotePercent);
 			break;
-		}
+		}*/
 
 		default:
 		{

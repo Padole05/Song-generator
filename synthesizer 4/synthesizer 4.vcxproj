@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{08510755-3c0b-4a5b-bf88-e77f9df80a56}</ProjectGuid>
-    <RootNamespace>Synthesizer3</RootNamespace>
+    <ProjectGuid>{7ad97a1d-214c-4302-81cb-466d98384778}</ProjectGuid>
+    <RootNamespace>synthesizer4</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Synthesizer 3 experimenting</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -128,13 +127,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AudioConverter.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Wave.cpp" />
+    <ClCompile Include="Oscillator.cpp" />
+    <ClCompile Include="SineWaveGenerator.cpp" />
+    <ClCompile Include="WaveFileHeader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioConverter.h" />
     <ClInclude Include="const.h" />
-    <ClInclude Include="Wave.h" />
+    <ClInclude Include="Oscillator.h" />
+    <ClInclude Include="SineWaveGenerator.h" />
     <ClInclude Include="WaveFileHeader.h" />
+    <ClInclude Include="WaveFileWriter.h" />
+    <ClInclude Include="WaveGenerator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
